@@ -2,12 +2,19 @@ module App.Game where
 
 import Prelude
 
+import App.CSS.GlobalStyles (styles)
+import App.CardFaceUp (cardComponent)
+import Data.Array ((:))
 import Data.Maybe (Maybe(..))
+import Data.Symbol (SProxy(..))
 import Effect.Class (class MonadEffect)
 import General.Cards (Deck(..), shuffled)
 import Halogen as H
 import Halogen.HTML as HH
---import Halogen.HTML.Events as HE
+
+type Slots = ( cardComponent :: forall q. H.Slot q Void Unit )
+
+_card = SProxy :: SProxy "cardComponent"
 
 type State = Deck
 
@@ -24,10 +31,11 @@ component =
       }
     }
 
-render :: forall cs m. Deck -> H.ComponentHTML Action cs m
+render :: forall m. Deck -> H.ComponentHTML Action Slots m
 render (Deck cards) =
   HH.div_ $
-    map (\card -> HH.p_ [ HH.text $ show card ]) cards
+    styles :
+    map (\card -> HH.slot _card unit cardComponent card (\_ -> Nothing)) cards
 
 
 handleAction :: forall cs o m. MonadEffect m => Action → H.HalogenM Deck Action cs o m Unit

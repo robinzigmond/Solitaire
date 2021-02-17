@@ -11,15 +11,15 @@ import Partial.Unsafe (unsafePartial)
 data Suit = Spade | Heart | Diamond | Club
 
 instance showSuit :: Show Suit where
-  show Spade = "spade"
-  show Heart = "heart"
-  show Diamond = "diamond"
-  show Club = "club"
+  show Spade = "S"
+  show Heart = "H"
+  show Diamond = "D"
+  show Club = "C"
 
 data Rank = Ace | Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten | Jack | Queen | King
 
 instance showRank :: Show Rank where
-  show Ace = "ace"
+  show Ace = "A"
   show Two = "2"
   show Three = "3"
   show Four = "4"
@@ -29,14 +29,14 @@ instance showRank :: Show Rank where
   show Eight = "8"
   show Nine = "9"
   show Ten = "10"
-  show Jack = "jack"
-  show Queen = "queen"
-  show King = "king"
+  show Jack = "J"
+  show Queen = "Q"
+  show King = "K"
 
 data Card = Card Rank Suit
 
 instance showCard :: Show Card where
-  show (Card rank suit) = show rank <> " of " <> show suit <> "s"
+  show (Card rank suit) = show suit <> show rank
 
 newtype Deck = Deck (Array Card)
 
