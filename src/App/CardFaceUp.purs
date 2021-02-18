@@ -2,9 +2,12 @@ module App.CardFaceUp where
 
 import Prelude
 
-import General.Cards (Card)
+import Color as Color
+import CSS as CSS
+import General.Cards (Card(..), Suit(..))
 import Halogen as H
 import Halogen.HTML as HH
+import Halogen.HTML.Properties as HP
 
 --import Halogen.HTML.Events as HE
 
@@ -21,8 +24,36 @@ cardComponent =
     }
 
 render :: forall a cs m. State -> H.ComponentHTML a cs m
-render card =
-  HH.div_ [
-      HH.text $ show card,
-      HH.text $ show card
+render card@(Card _ suit) =
+  HH.div [ HP.classes [ HH.ClassName componentCssClass, HH.ClassName cardColour ] ] [
+      HH.div [ HP.class_ (HH.ClassName "top-left") ] [ HH.text $ show card ],
+      HH.div [ HP.class_ (HH.ClassName "bottom-right") ] [ HH.text $ show card ]
   ]
+  where cardColour = case suit of
+          Spade -> "black"
+          Heart -> "red"
+          Diamond -> "red"
+          Club -> "black"
+
+componentCssClass :: String
+componentCssClass = "card"
+
+styles :: CSS.CSS
+styles = do
+  CSS.select (CSS.fromString $ "." <> componentCssClass) $ do
+    CSS.position $ CSS.relative
+    CSS.border (CSS.solid) (CSS.px 2.0) (Color.rgb 0 0 0)
+    CSS.height $ CSS.px 120.0
+    CSS.width $ CSS.px 80.0
+    CSS.select (CSS.fromString ".top-left") $ do
+      CSS.position $ CSS.absolute
+      CSS.top $ CSS.px 10.0
+      CSS.left $ CSS.px 10.0
+    CSS.select (CSS.fromString ".bottom-right") $ do
+      CSS.position $ CSS.absolute
+      CSS.bottom $ CSS.px 10.0
+      CSS.right $ CSS.px 10.0
+  CSS.select (CSS.fromString $ "." <> componentCssClass <> ".red") $ do
+    CSS.color $ Color.rgb 255 0 0
+  CSS.select (CSS.fromString $ "." <> componentCssClass <> ".black") $ do
+    CSS.color $ Color.rgb 0 0 0

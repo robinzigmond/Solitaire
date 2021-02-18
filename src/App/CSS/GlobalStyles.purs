@@ -4,12 +4,10 @@ module App.CSS.GlobalStyles where
 
 import Prelude
 
-import Color as Color
-import CSS as CSS
+import App.CardFaceUp as CardFaceUp
 import Halogen.HTML (HTML)
 import Halogen.HTML.CSS (stylesheet)
 
 styles :: forall i p. HTML p i
-styles = stylesheet $
-  CSS.select (CSS.fromString "body") $ do
-    CSS.color $ Color.rgb 255 0 0
+styles = stylesheet $ do
+  CardFaceUp.styles
