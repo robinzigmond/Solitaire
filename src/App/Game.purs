@@ -4,9 +4,10 @@ import Prelude
 
 import App.CSS.GlobalStyles (styles)
 import App.CardFaceUp (cardComponent)
-import Data.Array ((:))
+import Data.Array ((:), mapWithIndex)
 import Data.Maybe (Maybe(..))
 import Data.Symbol (SProxy(..))
+import Data.Tuple (Tuple(..))
 import Effect.Class (class MonadEffect)
 import General.Cards (Deck(..), shuffled)
 import Halogen as H
@@ -35,7 +36,7 @@ render :: forall m. Deck -> H.ComponentHTML Action Slots m
 render (Deck cards) =
   HH.div_ $
     styles :
-    map (\card -> HH.slot _card unit cardComponent card (\_ -> Nothing)) cards
+    mapWithIndex (\idx card -> HH.slot _card unit cardComponent (Tuple card idx) (\_ -> Nothing)) cards
 
 
 handleAction :: forall cs o m. MonadEffect m => Action → H.HalogenM Deck Action cs o m Unit
